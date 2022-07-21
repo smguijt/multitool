@@ -175,7 +175,7 @@ func reprocessCmd_postRedistribute(useBasicAuthentication bool, entityType strin
 	body, _ := ioutil.ReadAll(resp.Body)
 	if config.Debug {
 		//log.Printf("%s\n", string(body))
-		reprocessCmd_writeJson(string(body), "")
+		reprocessCmd_writeJson(string(body), "", entityType, listKey)
 	}
 }
 
@@ -236,14 +236,22 @@ func reprocessCmd_OAuth02_AuthenticationToken() {
 	}
 }
 
-func reprocessCmd_writeJson(response string, continueationToken string) {
+func reprocessCmd_writeJson(response string, continueationToken string, entityType string, listKey string) {
 	// create file
 	var fileName string
 	home, _ := homedir.Dir()
 	if continueationToken == "" {
-		fileName = config.EndpointMethod + ".json"
+		fileName = config.EndpointMethod + "_" + entityType
+		if len(listKey) > 0 {
+			fileName += "_" + listKey
+		}
+		fileName += ".json"
 	} else {
-		fileName = config.EndpointMethod + "_" + continueationToken + ".json"
+		fileName = config.EndpointMethod + "_" + entityType
+		if len(listKey) > 0 {
+			fileName += "_" + listKey
+		}
+		fileName += "_" + continueationToken + ".json"
 	}
 
 	file, errHomeDir := os.Create(home + "/.multiTool/" + fileName)
