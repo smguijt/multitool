@@ -13,7 +13,8 @@ api_scope: requestStatus.read
 authmethod: 2
 debug: enables debug mode. When active .json files are written for the request within the .multiTool folder
 
-to run: open command line and execute command.  "multiTool requestStatus"
+to run: open command line and execute command.  "multiTool --config <config.yaml> report requestStatus"
 the file will write Excel document requestStatus.xlsx under the .multiTool folder
+for more information see the documents under the documentation folder
 
 
