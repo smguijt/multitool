@@ -17,4 +17,4 @@ to run: open command line and execute command.  "multiTool --config <config.yaml
 the file will write Excel document requestStatus.xlsx under the .multiTool folder
 for more information see the documents under the documentation folder
 
-
+to compile an executable please run from the terminal: go build multiTool.go
