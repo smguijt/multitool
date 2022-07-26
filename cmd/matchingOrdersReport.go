@@ -25,6 +25,10 @@ import (
 )
 
 var matchingOrdersToProcess []string
+var iMatchingOrderLineRecord int = 2
+var iMatchingOrderLineCodingsRecord int = 2
+var iMatchingOrderLineGoodsReceiptRecord int = 2
+var iMatchingOrderLineUserReferenceRecord int = 2
 
 // matchingOrdersReportCmd represents the matchingOrdersReport command
 var matchingOrdersReportCmd = &cobra.Command{
@@ -317,6 +321,7 @@ func matchingOrderLinesCmd_CreateExcelDocument(xlsx *excelize.File) (*excelize.F
 
 func matchingOrdersCmd_SaveExcelDocument(xlsx *excelize.File, index int, continueationToken string) {
 
+	log.Println("** matchingOrdersCmd_SaveExcelDocument **")
 	home, _ := homedir.Dir()
 	homeDir := home + "/.multiTool/"
 	var filename string
@@ -418,27 +423,45 @@ func matchingOrderCmd_AddRecord(json components.OrderResponse, xlsx *excelize.Fi
 
 func matchingOrderLineCmd_AddRecord(json []components.OrderLineEntity, xlsx *excelize.File, iRow int) (*excelize.File, int) {
 
-	var iRowIndex int
+	/*
+		var iMatchingOrderLineRecord int64
+		var iMatchingOrderLineCodingsRecord int64
+		var iMatchingOrderLineGoodsReceiptRecord int64
+		var iMatchingOrderLineUserReferenceRecord int64
+	*/
+
 	for _, rec := range json {
 		// Process Line Records
-		iRowIndex = iRow
-		xlsx, _ = matchingOrdersCmd_AddMatchingOrderLinesRecord(rec, xlsx, iRowIndex)
+		xlsx, _ = matchingOrdersCmd_AddMatchingOrderLinesRecord(rec, xlsx, iMatchingOrderLineRecord)
+		iMatchingOrderLineRecord++
+		//iRow++
 
 		// add coding line
+		//iRowIndex = iRow
 		for _, recLineCoding := range rec.OrderLineCoding {
-			xlsx, _ = matchingOrdersCmd_AddMatchingOrderLineCodingsRecord(recLineCoding, xlsx, iRowIndex)
+			xlsx, _ = matchingOrdersCmd_AddMatchingOrderLineCodingsRecord(recLineCoding, xlsx, iMatchingOrderLineCodingsRecord)
+			iMatchingOrderLineCodingsRecord++
+			//iRow++
 		}
 
+		//iRowIndex = iRow
 		for _, recGoodsReceipt := range rec.GoodsReceipts {
-			xlsx, _ = matchingOrdersCmd_AddMatchingGoodsReceiptsRecord(recGoodsReceipt, xlsx, iRowIndex)
+			xlsx, _ = matchingOrdersCmd_AddMatchingGoodsReceiptsRecord(recGoodsReceipt, xlsx, iMatchingOrderLineGoodsReceiptRecord)
+			iMatchingOrderLineGoodsReceiptRecord++
+			//iRow++
 		}
 
+		//iRowIndex = iRow
 		for _, recRefUsers := range rec.ReferenceUsers {
-			xlsx, _ = matchingOrdersCmd_AddMatchingOrderLineReferenceUsersRecord(recRefUsers, xlsx, iRowIndex)
+			xlsx, _ = matchingOrdersCmd_AddMatchingOrderLineReferenceUsersRecord(recRefUsers, xlsx, iMatchingOrderLineUserReferenceRecord)
+			iMatchingOrderLineUserReferenceRecord++
+			//iRow++
 		}
 		//increment row number
-		iRow++
+		log.Printf("%d", iRow)
 	}
+
+	//iRow = iMatchingOrderLineRecord
 
 	return xlsx, iRow
 }

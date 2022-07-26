@@ -113,7 +113,7 @@ func init() {
 
 func initConfig() {
 	// set version
-	version := "1.0.2a"
+	version := "1.0.3"
 	config.Version = version
 	config.ExportFormat = "excel"
 
