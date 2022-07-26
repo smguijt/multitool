@@ -21,6 +21,7 @@ var reportCmd = &cobra.Command{
 - multiTool.exe --config <config>.yaml report requestStatus
 - multiTool.exe --config <config>.yaml report vendors
 - multiTool.exe --config <config>.yaml report accountingDocuments
+- multiTool.exe --config <config>.yaml report matchingOrders
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("report called")
